@@ -1,5 +1,7 @@
 /**
- *Work in progress
+ *Work in progress.. This script can be used to remove all the .svn
+ *references from a folder structure recursively. Can be customized to do the same for any
+ *generetic repeating file
  *
  * The file parameter is hardcoded
  * 

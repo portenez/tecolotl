@@ -1,3 +1,10 @@
+/**
+ * This script can be used to analyze the decimal rounding behavior in java
+ * 
+ * @author vgarcia
+ *
+ */
+
 totalUsers = 255
 divideIn = 4
 percentage = 1/divideIn
