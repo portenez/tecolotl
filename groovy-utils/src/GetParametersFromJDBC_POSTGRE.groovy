@@ -1,3 +1,10 @@
+/**
+ * @author Victor Garcia:  https://github.com/portenez
+ * 
+ * Parses a POSTGRE jdbc string and captures the different paremeters
+ * 
+ *
+ */
 println "start"
 def matcher = 'jdbc:postgresql://ea-mysql1:5432/JMeterWH' =~ /jdbc:postgresql:\/\/(.+?):(\d+?)\/(.+)/
 

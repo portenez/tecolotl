@@ -1,7 +1,8 @@
 /**
- * This script can be used to analyze the decimal rounding behavior in java
+ * @author Victor Garcia: https://github.com/portenez
  * 
- * @author vgarcia
+ * Very simple script to analyze the different "rounding" mechanisms in java
+ * 
  *
  */
 

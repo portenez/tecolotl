@@ -1,9 +1,15 @@
 /**
- *Work in progress.. This script can be used to remove all the .svn
- *references from a folder structure recursively. Can be customized to do the same for any
- *generetic repeating file
+ *@author Victor Garcia: https://github.com/portenez
  *
- * The file parameter is hardcoded
+ *Work in progress..but already works! 
+ *
+ *
+ *
+ *This script can be used to remove all the .svn
+ *references from a folder structure recursively. Can be customized to do the same for any
+ *generic repeating file
+ *
+ * The file parameter is hardcoded, you need to change it o match your needs
  * 
  */
 // TODO get this from arguments
