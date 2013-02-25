@@ -1,7 +1,16 @@
 import com.google.common.io.Files;
-
-
-
+/**
+ * Victor Garcia, Feb 25, 2013
+ * 
+ * This script can be used to analyze the filter file
+ * of a VC 2010 project and back up the corresponding
+ * lib files
+ * 
+ * 
+ * !!! THIS IS ALWAYS WORK IN PROGRESS !!!
+ * NO GUARANTEE
+ * 
+ */
 class RelativePathHelper{
 	
 	def srcPath;
@@ -52,6 +61,8 @@ class LibFilesFinder{
 	LibFilesFinder(File srcFolder){
 		this.srcFolder = srcFolder
 		
+		
+		
 		def findVCProj = {it ->
 			def out = null;
 			it.eachFile{
@@ -81,18 +92,55 @@ class LibFilesFinder{
 	}
 }
 
-def srcFolder = new File("z:\\Aurora\\Code\\SwfLoader")
+
+def ok = args
+def cli = new CliBuilder(usage:'GetAllLibrariesFromVCProj.groovy')
+cli.s('source project folder', args: 1)
+cli.d('dest backup folder for lib files', args: 1)
+cli.z('zip file command', args:1 )
+cli.a('archive file', args:1)
+
+def options = cli.parse(args)
+
+println options.s
+println options.d
+println options.z
+println options.a
+
+def srcFolder = new File(options.s)
 def finder = new LibFilesFinder(srcFolder)
 
 println("absolutes paths: " + finder.findAbsoluteFileNames(true));
 println("absolutes paths no root: " + finder.findAbsoluteFileNames(false));
 
-def backupTarget = new File("z:\\LIB\\backup-${System.currentTimeMillis()}-${finder.filtersFile.name}")
+
+
+def backupTarget = new File("${options.d}\\backup-${System.currentTimeMillis()}-${finder.filtersFile.name}")
 backupTarget.mkdirs();
 
-finder.findAbsoluteFileNames(true).each{
-	File srcFile = new File(it)	
-	File dstFile = new File(backupTarget, srcFile.name)
-	println("copying from: [${srcFile.absolutePath}] to: [${dstFile}]")
-	Files.copy(srcFile, dstFile)
+def unzipTarget = new File("${options.d}\\unzip-${System.currentTimeMillis()}-${finder.filtersFile.name}")
+unzipTarget.mkdirs();
+
+println "backup-target: ${backupTarget}"
+println "unzip-target: ${unzipTarget}"
+
+//copy all the found files to the backup location
+//finder.findAbsoluteFileNames(true).each{
+//	File srcFile = new File(it)	
+//	File dstFile = new File(backupTarget, srcFile.name)
+//	println("copying from: [${srcFile.absolutePath}] to: [${dstFile}]")
+//	Files.copy(srcFile, dstFile)
+//}
+
+finder.findAbsoluteFileNames(false).each{
+	File srcFile = new File(it)
+	File dstFile = new File(unzipTarget, srcFile.name)
+	def command = "\"${options.z}\" e \"${options.a}\" -o\"${unzipTarget.absolutePath}\" \"${it.substring(1)}\" "
+	println "command: ${command}"
+	
+	
+	
 }
+
+
+
