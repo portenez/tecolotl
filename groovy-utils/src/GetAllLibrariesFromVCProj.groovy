@@ -99,6 +99,7 @@ cli.s('source project folder', args: 1)
 cli.d('dest backup folder for lib files', args: 1)
 cli.z('zip file command', args:1 )
 cli.a('archive file', args:1)
+cli.i('info for backup and unzip folders', args:1)
 
 def options = cli.parse(args)
 
@@ -106,6 +107,7 @@ println options.s
 println options.d
 println options.z
 println options.a
+println options.i
 
 def srcFolder = new File(options.s)
 def finder = new LibFilesFinder(srcFolder)
@@ -113,32 +115,41 @@ def finder = new LibFilesFinder(srcFolder)
 println("absolutes paths: " + finder.findAbsoluteFileNames(true));
 println("absolutes paths no root: " + finder.findAbsoluteFileNames(false));
 
+def infoForFileName = String.format('%1$tY%1$tm%1$td-%1$tH%1$tM%1$tS.%1$tL', new Date());
+if(options.i){
+	infoForFileName ="${options.i} - ${infoForFileName}"
+}
 
 
-def backupTarget = new File("${options.d}\\backup-${System.currentTimeMillis()}-${finder.filtersFile.name}")
+def backupTarget = new File("${options.d}\\${infoForFileName}-backup-${finder.filtersFile.name}")
 backupTarget.mkdirs();
 
-def unzipTarget = new File("${options.d}\\unzip-${System.currentTimeMillis()}-${finder.filtersFile.name}")
+def unzipTarget = new File("${options.d}\\${infoForFileName}-unzip-${finder.filtersFile.name}")
 unzipTarget.mkdirs();
 
 println "backup-target: ${backupTarget}"
 println "unzip-target: ${unzipTarget}"
 
 //copy all the found files to the backup location
-//finder.findAbsoluteFileNames(true).each{
-//	File srcFile = new File(it)	
-//	File dstFile = new File(backupTarget, srcFile.name)
-//	println("copying from: [${srcFile.absolutePath}] to: [${dstFile}]")
-//	Files.copy(srcFile, dstFile)
-//}
-
+finder.findAbsoluteFileNames(true).each{
+	File srcFile = new File(it)	
+	File dstFile = new File(backupTarget, srcFile.name)
+	println("copying from: [${srcFile.absolutePath}] to: [${dstFile}]")
+	Files.copy(srcFile, dstFile)
+}
+//extrac files
 finder.findAbsoluteFileNames(false).each{
 	File srcFile = new File(it)
 	File dstFile = new File(unzipTarget, srcFile.name)
 	def command = "\"${options.z}\" e \"${options.a}\" -o\"${unzipTarget.absolutePath}\" \"${it.substring(1)}\" "
-	println "command: ${command}"
-	
-	
+	def proc = command.execute()
+	proc.waitFor()
+	def exitCode = proc.exitValue()
+	println "Executed command: [${command}] with result: [${exitCode}]"
+	if(exitCode!=0){
+		println proc.err.text
+		println proc.in.text	
+	}
 	
 }
 
