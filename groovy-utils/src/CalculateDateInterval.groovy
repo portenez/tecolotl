@@ -18,11 +18,8 @@ println "processing file: ${srcFile.canonicalPath}"
 def foundDates = [:]
 
 srcFile.eachLine{line ->
-	
-        def gline = "${line}"
-				def allDates = gline.findAll(datePattern)
 				
-				allDates.each{ foundDate -> 
+				"${line}".findAll(datePattern).each{ foundDate -> 
 					
 					def day = foundDate.find(dayPattern)
 					
@@ -46,6 +43,8 @@ srcFile.eachLine{line ->
 				}
 }
 
+//assume that the date-times are already sorted
+//the come from a log file
 
 foundDates.each{key, day ->
 	
@@ -58,12 +57,28 @@ foundDates.each{key, day ->
 		}
 		
 		if(prev != null){
-			day.diffs << it.time - prev.time
+			
+			def diff = [:]
+			diff.from = prev
+			diff.to = it
+			diff.delta = it.time - prev.time
+			
+			day.diffs << diff
+			
+			println "${diff.from}, ${diff.to}, ${diff.delta}"
 		}
 		prev = it
 	}
 	
-	println "$key ${day.min} ${day.max}"
+	day.duration = day.max.time - day.min.time
+	
+	println """
+[$key], 
+start: [${day.min}], 
+end: [${day.max}],  
+duration: ${day.duration/(1000*60*60)} hrs, 
+point count: ${day.points.size},
+"""
 }
 
 
