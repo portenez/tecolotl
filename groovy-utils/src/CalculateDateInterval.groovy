@@ -50,7 +50,7 @@ foundDates.each{key, day ->
 	
 	def prev = null
 	
-	day.points.each {
+	day.points.eachWithIndex {it, i ->
 		
 		if(day.diffs == null){
 			day.diffs = []
@@ -65,7 +65,7 @@ foundDates.each{key, day ->
 			
 			day.diffs << diff
 			
-			println "${diff.from}, ${diff.to}, ${diff.delta}"
+			println "$i,${diff.from}, ${diff.to}, ${diff.delta}, ${(diff.delta)/(1000*60)}, ${diff.delta/(1000*60*60)}"
 		}
 		prev = it
 	}
