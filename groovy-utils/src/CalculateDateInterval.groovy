@@ -11,52 +11,65 @@ import java.text.SimpleDateFormat
 def srcFile = new File("E:\\to-delete\\status2.xml")
 
 
-def datePattern = ~/\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/
-def dayPattern = ~/\d{4}-\d{2}-\d{2}/
+def dateTimePattern = ~/\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/
+def datePattern = ~/\d{4}-\d{2}-\d{2}/
 def dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-
 
 println "processing file: ${srcFile.canonicalPath}"
 
-def foundDates = [:]
+def dateContainers = [:]
+
+def extractDateFromDateTimeString = { dateTime ->
+	return dateTime.find(datePattern)
+}
+
+def getOrNewDateContainer = { date ->
+	
+	def dateContainer = dateContainers[date]
+	
+	if(dateContainer== null){
+		dateContainer = [:]
+		dateContainer.points = []		
+		dateContainers[date] = dateContainer
+	}
+	
+	return dateContainer
+}
 
 srcFile.eachLine{line ->
 				
-				"${line}".findAll(datePattern).each{ foundDate -> 
-					
-					def day = foundDate.find(dayPattern)
-					
-					if(foundDates[day]== null){
-						foundDates[day] = [:]
-						foundDates[day].points = []
-					}
-					
-					def curDay = foundDates[day]
-					def curTime = dateFormat.parse(foundDate)
-					
-					curDay.points << curTime
-					
-					if(curDay.min == null || curTime.time < curDay.min.time){
-						curDay.min = curTime
-					}
-					if(curDay.max == null ||  curDay.max.time < curTime.time){
-						curDay.max = curTime
-					}
-					
-				}
+		"${line}".findAll(dateTimePattern).each{ dateTime ->
+			
+			//first separate by day
+			def dateContainer = 
+					getOrNewDateContainer(
+							extractDateFromDateTimeString(dateTime))
+			 
+			dateTime = dateFormat.parse(dateTime)
+			
+			dateContainer.points << dateTime
+			
+			if(dateContainer.min == null || dateTime.time < dateContainer.min.time){
+				dateContainer.min = dateTime
+			}
+			if(dateContainer.max == null ||  dateContainer.max.time < dateTime.time){
+				dateContainer.max = dateTime
+			}
+			
+		}
 }
 
 //assume that the date-times are already sorted
 //the come from a log file
 
-foundDates.each{key, day ->
+dateContainers.each{key, dateContainer ->
 	
 	def prev = null
 	
-	day.points.eachWithIndex {it, i ->
+	dateContainer.points.eachWithIndex {it, i ->
 		
-		if(day.diffs == null){
-			day.diffs = []
+		if(dateContainer.diffs == null){
+			dateContainer.diffs = []
 		}
 		
 		if(prev != null){
@@ -66,21 +79,21 @@ foundDates.each{key, day ->
 			diff.to = it
 			diff.delta = it.time - prev.time
 			
-			day.diffs << diff
+			dateContainer.diffs << diff
 			
 			println "$i,${diff.from}, ${diff.to}, ${diff.delta}, ${(diff.delta)/(1000*60)}, ${diff.delta/(1000*60*60)}"
 		}
 		prev = it
 	}
 	
-	day.duration = day.max.time - day.min.time
+	dateContainer.duration = dateContainer.max.time - dateContainer.min.time
 	
 	println """
 [$key], 
-start: [${day.min}], 
-end: [${day.max}],  
-duration: ${day.duration/(1000*60*60)} hrs, 
-point count: ${day.points.size},
+start: [${dateContainer.min}], 
+end: [${dateContainer.max}],  
+duration: ${dateContainer.duration/(1000*60*60)} hrs, 
+point count: ${dateContainer.points.size},
 """
 }
 
