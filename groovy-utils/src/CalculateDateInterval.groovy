@@ -7,11 +7,14 @@ import java.text.SimpleDateFormat
  * @author vgarcia
  *
  */
+// TODO move this to be passed as a parameter
+def srcFile = new File("E:\\to-delete\\status2.xml")
 
-def srcFile = new File("E:\\to-delete\\status.xml")
+
 def datePattern = ~/\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/
-def dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 def dayPattern = ~/\d{4}-\d{2}-\d{2}/
+def dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
 
 println "processing file: ${srcFile.canonicalPath}"
 
