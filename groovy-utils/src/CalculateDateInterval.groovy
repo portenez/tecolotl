@@ -8,8 +8,7 @@ import java.text.SimpleDateFormat
  *
  */
 // TODO move this to be passed as a parameter
-def srcFile = new File("E:\\to-delete\\status2.xml")
-
+def srcFile = new File("E:\\to-delete\\evening.xml")
 
 def dateTimePattern = ~/\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/
 def datePattern = ~/\d{4}-\d{2}-\d{2}/
@@ -29,12 +28,18 @@ def getOrNewDateContainer = { date ->
 	
 	if(dateContainer== null){
 		dateContainer = [:]
-		dateContainer.points = []		
+		dateContainer.points = []
+		dateContainer.distinctDiffs = new TreeSet()
+		dateContainer.diffs = []
+		
 		dateContainers[date] = dateContainer
+		
 	}
 	
 	return dateContainer
 }
+
+
 
 srcFile.eachLine{line ->
 				
@@ -49,28 +54,25 @@ srcFile.eachLine{line ->
 			
 			dateContainer.points << dateTime
 			
-			if(dateContainer.min == null || dateTime.time < dateContainer.min.time){
-				dateContainer.min = dateTime
+			if(dateContainer.lowerBound == null || dateTime.time < dateContainer.lowerBound.time){
+				dateContainer.lowerBound = dateTime
 			}
-			if(dateContainer.max == null ||  dateContainer.max.time < dateTime.time){
-				dateContainer.max = dateTime
+			if(dateContainer.upperBound == null ||  dateContainer.upperBound.time < dateTime.time){
+				dateContainer.upperBound = dateTime
 			}
 			
 		}
 }
 
+
 //assume that the date-times are already sorted
-//the come from a log file
+//they come from a log file
 
 dateContainers.each{key, dateContainer ->
 	
 	def prev = null
 	
 	dateContainer.points.eachWithIndex {it, i ->
-		
-		if(dateContainer.diffs == null){
-			dateContainer.diffs = []
-		}
 		
 		if(prev != null){
 			
@@ -80,22 +82,27 @@ dateContainers.each{key, dateContainer ->
 			diff.delta = it.time - prev.time
 			
 			dateContainer.diffs << diff
+			dateContainer.distinctDiffs << diff.delta
+			
 			
 			println "$i,${diff.from}, ${diff.to}, ${diff.delta}, ${(diff.delta)/(1000*60)}, ${diff.delta/(1000*60*60)}"
 		}
 		prev = it
 	}
 	
-	dateContainer.duration = dateContainer.max.time - dateContainer.min.time
+	dateContainer.duration = dateContainer.upperBound.time - dateContainer.lowerBound.time
 	
 	println """
 [$key], 
-start: [${dateContainer.min}], 
-end: [${dateContainer.max}],  
+start: [${dateContainer.lowerBound}], 
+end: [${dateContainer.upperBound}],  
 duration: ${dateContainer.duration/(1000*60*60)} hrs, 
 point count: ${dateContainer.points.size},
+distinctMsDiffs: ${dateContainer.distinctDiffs}
 """
 }
+
+println "File process done!!"
 
 
 
