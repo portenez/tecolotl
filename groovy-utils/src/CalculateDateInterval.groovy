@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat
  *
  */
 // TODO move this to be passed as a parameter
-def srcFile = new File("E:\\to-delete\\evening.xml")
+def srcFile = new File("E:\\to-delete\\iServer.xml")
 
 def dateTimePattern = ~/\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/
 def datePattern = ~/\d{4}-\d{2}-\d{2}/
@@ -91,15 +91,28 @@ dateContainers.each{key, dateContainer ->
 	}
 	
 	dateContainer.duration = dateContainer.upperBound.time - dateContainer.lowerBound.time
-	
+}
+
+def allDistinctDiffs = new TreeSet()
+
+dateContainers.each{key, dateContainer ->
 	println """
 [$key], 
 start: [${dateContainer.lowerBound}], 
 end: [${dateContainer.upperBound}],  
 duration: ${dateContainer.duration/(1000*60*60)} hrs, 
 point count: ${dateContainer.points.size},
-distinctMsDiffs: ${dateContainer.distinctDiffs}
 """
+	
+	println "Distinct diffs:"
+	dateContainer.distinctDiffs.each{
+		allDistinctDiffs << it
+		println it
+	}
+}
+println "All distinct diffs"
+allDistinctDiffs.each{
+	println it
 }
 
 println "File process done!!"
