@@ -1,3 +1,5 @@
+@Grab(group='com.google.guava', module='guava', version='17.0')
+
 import com.google.common.io.Files;
 /**
  * Victor Garcia, Feb 25, 2013
