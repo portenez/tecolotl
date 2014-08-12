@@ -1,12 +1,4 @@
 
 vagrant/.project
 
-vagrant/fedora-with-chef/.vagrant/machines/default/virtualbox/action_provision
-
-vagrant/fedora-with-chef/.vagrant/machines/default/virtualbox/action_set_name
-
-vagrant/fedora-with-chef/.vagrant/machines/default/virtualbox/index_uuid
-
-vagrant/fedora-with-chef/.vagrant/machines/default/virtualbox/synced_folders
-
-vagrant/fedora-with-chef/.vagrant/machines/default/virtualbox/id
+vagrant/fedora-with-chef/.vagrant
