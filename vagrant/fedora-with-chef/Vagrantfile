@@ -11,6 +11,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "chef/fedora-20"
+  config.vm.provider "virtualbox" do |v|
+  	v.memory = 4048
+  end
   
   config.vm.provision :shell, path: "provision.sh"
 
