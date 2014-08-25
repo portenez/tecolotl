@@ -1,0 +1,13 @@
+# @title Inconsolata
+# @description text font to inconsolata
+# @task_type LASTMOD
+#
+# Created by the Workspace Mechanic Preference Recorder
+#Wed Jul 23 22:42:24 EDT 2014
+/instance/org.eclipse.ui.workbench/ColorsAndFontsPreferencePage.expandedCategories=Torg.eclipse.ui.workbenchMisc\tTorg.eclipse.team.cvs.ui.fontsandcolors\tTorg.eclipse.debug.ui.presentation\tTorg.eclipse.egit.ui.GitTheme\tTorg.eclipse.jdt.ui.presentation\tTorg.eclipse.wst.jsdt.ui.presentation\tTorg.eclipse.rse.ui.presentation\tTorg.eclipse.rse.ui.remotecommandsview.presentation\tTorg.eclipse.wst.sse.ui\tTorg.eclipse.mylyn.tasks.ui.presentation\tTorg.eclipse.compare.contentmergeviewer.TextMergeViewer\tTorg.eclipse.ui.presentation.default\tTorg.eclipse.mylyn.wikitext.ui.presentation
+/instance/org.eclipse.ui.workbench/org.eclipse.jface.textfont=1|Inconsolata|11.0|0|GTK|1|;
+/instance/com.google.eclipse.mechanic/blockedTaskIds=[]
+/instance/com.google.eclipse.mechanic/mechanicSourceDirectories=["/home/portenez/.eclipse/mechanic","/opt/eclipse-jee-luna-R-linux-gtk-x86_64/configuration/com.google.eclipse.mechanic/mechanic"]
+file_export_version=3.0
+/instance/org.eclipse.jdt.ui/org.eclipse.jface.textfont=1|Inconsolata|11.0|0|GTK|1|;
+/instance/org.eclipse.ui.workbench/ColorsAndFontsPreferencePage.selectedElement=Forg.eclipse.jface.textfont

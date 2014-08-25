@@ -1,0 +1,12 @@
+[Desktop Entry]
+#Remember to download the
+#eclipse distribution first
+#this file is to be copied to: 
+#/usr/share/applications
+Name=Eclipse-Luna-EE-Spring
+GenericName=Eclipse IDE
+Comment=Code using Eclipse IDE LUNA with EE and Spring
+Exec=/opt/eclipse-jee-luna-R-linux-gtk-x86_64/eclipse
+Type=Application
+Categories=Other
+Icon=/opt/eclipse-jee-luna-R-linux-gtk-x86_64/eclipse-luna-icon.jpg
