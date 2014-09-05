@@ -1,0 +1,27 @@
+{
+  "name": "unzip-dependencies",
+  "version": "1.0.0",
+  "description": "NodeJs  script to fetch zipped files and unzipping necessary files",
+  "main": "do.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/portenez/tecolotl"
+  },
+  "keywords": [
+    "unzip",
+    "dependencies",
+    "ant"
+  ],
+  "author": "Victor Garcia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/portenez/tecolotl/issues"
+  },
+  "homepage": "https://github.com/portenez/tecolotl",
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
+}
