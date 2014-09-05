@@ -2,8 +2,8 @@ module.exports = (grunt)->
   
   
   
-  grunt.initConfig {
-    coffee:{
+  grunt.initConfig 
+    coffee:
       compile:
         files:[
           expand:true
@@ -12,8 +12,8 @@ module.exports = (grunt)->
           dest: './lib'
           ext: '.js'
         ]
-    }
-  }
+    
+  
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.registerTask 'default', 'coffee'
       
