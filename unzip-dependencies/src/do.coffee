@@ -1,11 +1,6 @@
 ###
  * New coffeescript file
 ###
-fs = require 'fs'
-Promise = require 'promise'
-readFile = Promise.denodeify fs.readFile
-
-  
 
 
 argv = require 'yargs' 
@@ -21,7 +16,14 @@ console.log "Configuration loaded: #{JSON.stringify(conf)}"
 console.log "Using antfile: #{conf.antFile}"
 
 
-processAntFile = (file)->
-  console.log file
+fs = require 'fs'
+Lazy = require 'lazy'
 
-readFile(conf.antFile,'utf8').then(processAntFile)
+new Lazy(fs.createReadStream(conf.antFile,'utf8'))
+  .lines
+  .map (line)->
+    line.toString('utf8')
+  .filter (line)->
+    /pathelement/.test line
+  .forEach (line)->
+    console.log line
