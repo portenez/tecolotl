@@ -1,5 +1,5 @@
 {
-	"antFile":"E:/views/vgarcia_Cloud_OM/Tools/CrossOS/MCDgnstc/BuildScripts/Framework/build.xml",
+	"javaConfig":"Z:/Tools/CrossOS/MCDgnstc/JavaConfig.xml",
 	"dirs":{
 		"jars":"//was-cc2-tech/cm_bld3/9.5.2800.0003/RELEASE/BIN",
 		"3rdParty":"z:/3rdParty",

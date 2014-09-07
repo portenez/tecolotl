@@ -13,7 +13,7 @@ argv = require 'yargs'
 console.log "Loading configuration from file: #{argv.conf}"
 conf = require argv.conf
 console.log "Configuration loaded: #{JSON.stringify(conf)}"
-console.log "Using antfile: #{conf.antFile}"
+console.log "Using javaConfig: #{conf.javaConfig}"
 
 
 fs = require 'fs'
@@ -42,28 +42,31 @@ prepare = (targetDir)->
 
 getDependencies = ()->
   console.log "Getting dependencies..."
-  new Lazy(fs.createReadStream(conf.antFile,'utf8'))
+  new Lazy(fs.createReadStream(conf.javaConfig,'utf8'))
     .lines
     .map (line)->
       line.toString('utf8')
     .filter (line)->
-      /pathelement/.test line
+      /CLASSPATH/.test line
     .map (line)->
-      match = /"(.*)"/.exec line
-      match = match[1] #get first group
-    .map (pathelement)->
-      pathelement = pathelement.replace /\${3rdParty}/g , conf.dirs["3rdParty"]
-      pathelement = pathelement.replace /\${jars}/g, conf.dirs["jars"]
-      jarName = path.basename(pathelement)
-      target = "#{conf.dirs['target']}/#{jarName}"
+      match = /\/(.*\.jar)<\/CLASSPATH>/gi.exec line
+    .filter (match)->
+      match?
+    .map (match)->
+      match[1]
+    .map (jarName)->
+      console.log "Found line #{jarName}"
+      to = "#{conf.dirs['target']}/#{jarName}"
+      from = "#{conf.dirs['jars']}/#{jarName}"
+       
       {
-        fullPath: pathelement
-        jarName: jarName,
-        target: target
+        from: from
+        jarName: jarName
+        to: to
       }
     .forEach (elementToProcess)-> 
       console.log "Processing file #{JSON.stringify(elementToProcess)}"
-      fs.writeFileSync elementToProcess.target, fs.readFileSync(elementToProcess.fullPath)
+      fs.writeFileSync elementToProcess.to, fs.readFileSync(elementToProcess.from)
       
 createClassPath = ()->
   #TODO
