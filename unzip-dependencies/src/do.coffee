@@ -30,6 +30,7 @@ new Lazy(fs.createReadStream(conf.antFile,'utf8'))
     match = match[1] #get first group
   .map (line)->
     line.replace /\${3rdParty}/g , conf.dirs["3rdParty"]
+    line.replace /\${jars}/g, conf.dirs["jars"]
   .join (line)->
     console.log line 
 

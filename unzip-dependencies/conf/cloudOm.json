@@ -2,7 +2,8 @@
 	"antFile":"E:/views/vgarcia_Cloud_OM/Tools/CrossOS/MCDgnstc/BuildScripts/Framework/build.xml",
 	"dirs":{
 		"jars":"//was-cc2-tech/cm_bld3/9.5.2800.0003/RELEASE/BIN",
-		"3rdParty":"z:/3rdParty"
+		"3rdParty":"z:/3rdParty",
+		"target":"z:/diagnostics-dependencies"
 	}
 	
 }
