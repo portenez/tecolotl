@@ -18,19 +18,46 @@ console.log "Using antfile: #{conf.antFile}"
 
 fs = require 'fs'
 Lazy = require 'lazy'
+path = require 'path'
 
-new Lazy(fs.createReadStream(conf.antFile,'utf8'))
-  .lines
-  .map (line)->
-    line.toString('utf8')
-  .filter (line)->
-    /pathelement/.test line
-  .map (line)->
-    match = /"(.*)"/.exec line
-    match = match[1] #get first group
-  .map (line)->
-    line.replace /\${3rdParty}/g , conf.dirs["3rdParty"]
-    line.replace /\${jars}/g, conf.dirs["jars"]
-  .join (line)->
-    console.log line 
+clean = ()->
+  targetDir = conf.dirs["target"]
+  console.log "cleaning target file..."
+  if fs.existsSync(targetDir) 
+    fs.readdirSync(targetDir).forEach (file)->
+      toDelete = "#{targetDir}/#{file}"
+      console.log "deleting file #{toDelete}"  
+      fs.unlinkSync toDelete
+    
+    console.log "deleting folder #{targetDir}"
+    fs.rmdirSync targetDir
+  console.log "creating folder #{targetDir}"
+  fs.mkdirSync conf.dirs["target"]
+  
+
+getDependencies = ()->
+  console.log "Getting dependencies..."
+  new Lazy(fs.createReadStream(conf.antFile,'utf8'))
+    .lines
+    .map (line)->
+      line.toString('utf8')
+    .filter (line)->
+      /pathelement/.test line
+    .map (line)->
+      match = /"(.*)"/.exec line
+      match = match[1] #get first group
+    .map (line)->
+      line = line.replace /\${3rdParty}/g , conf.dirs["3rdParty"]
+      line = line.replace /\${jars}/g, conf.dirs["jars"]
+      {
+        fullPath: line
+        fileName: path.basename(line)
+      }
+    .forEach (line)-> 
+      fs.writeFileSync "#{conf.dirs['target']}/#{line.fileName}", fs.readFileSync(line.fullPath)
+      
+clean()
+getDependencies()
+
+
 
