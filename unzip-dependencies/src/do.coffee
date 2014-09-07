@@ -40,9 +40,9 @@ prepare = (targetDir)->
   create targetDir
   
 
-getDependencies = ()->
+getDependencies = (javaConfig)->
   console.log "Getting dependencies..."
-  new Lazy(fs.createReadStream(conf.javaConfig,'utf8'))
+  new Lazy(fs.createReadStream(javaConfig,'utf8'))
     .lines
     .map (line)->
       line.toString('utf8')
@@ -72,7 +72,7 @@ createClassPath = ()->
   #TODO
     
 prepare conf.dirs["target"]
-getDependencies()
+getDependencies javaConfig for javaConfig in conf.javaConfigs
 
 
 

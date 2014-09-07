@@ -1,5 +1,7 @@
 {
-	"javaConfig":"Z:/Tools/CrossOS/MCDgnstc/JavaConfig.xml",
+	"javaConfigs":[
+	              "Z:/Tools/CrossOS/MCDgnstc/JavaConfig.xml",
+	              "Z:/Tools/CrossOS/MCDgnstc/JavaConfigGUI.xml"],
 	"dirs":{
 		"jars":"//was-cc2-tech/cm_bld3/9.5.2800.0003/RELEASE/BIN",
 		"3rdParty":"z:/3rdParty",
