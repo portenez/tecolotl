@@ -20,19 +20,24 @@ fs = require 'fs'
 Lazy = require 'lazy'
 path = require 'path'
 
-clean = ()->
-  targetDir = conf.dirs["target"]
-  console.log "cleaning target file..."
-  if fs.existsSync(targetDir) 
-    fs.readdirSync(targetDir).forEach (file)->
-      toDelete = "#{targetDir}/#{file}"
-      console.log "deleting file #{toDelete}"  
-      fs.unlinkSync toDelete
+clean = (targetDir)->
+
+  fs.readdirSync(targetDir).forEach (file)->
+    toDelete = "#{targetDir}/#{file}"
+    console.log "deleting file #{toDelete}"  
+    fs.unlinkSync toDelete
     
-    console.log "deleting folder #{targetDir}"
-    fs.rmdirSync targetDir
+  console.log "deleting folder #{targetDir}"
+  fs.rmdirSync targetDir
+
+create = (targetDir)->
   console.log "creating folder #{targetDir}"
-  fs.mkdirSync conf.dirs["target"]
+  fs.mkdirSync conf.dirs["target"] 
+  
+prepare = (targetDir)->
+  console.log "preparing target dir: #{targetDir}"
+  if fs.existsSync(targetDir) then clean targetDir
+  create targetDir
   
 
 getDependencies = ()->
@@ -46,20 +51,24 @@ getDependencies = ()->
     .map (line)->
       match = /"(.*)"/.exec line
       match = match[1] #get first group
-    .map (line)->
-      line = line.replace /\${3rdParty}/g , conf.dirs["3rdParty"]
-      line = line.replace /\${jars}/g, conf.dirs["jars"]
+    .map (pathelement)->
+      pathelement = pathelement.replace /\${3rdParty}/g , conf.dirs["3rdParty"]
+      pathelement = pathelement.replace /\${jars}/g, conf.dirs["jars"]
+      jarName = path.basename(pathelement)
+      target = "#{conf.dirs['target']}/#{jarName}"
       {
-        fullPath: line
-        fileName: path.basename(line)
+        fullPath: pathelement
+        jarName: jarName,
+        target: target
       }
-    .forEach (line)-> 
-      fs.writeFileSync "#{conf.dirs['target']}/#{line.fileName}", fs.readFileSync(line.fullPath)
+    .forEach (elementToProcess)-> 
+      console.log "Processing file #{JSON.stringify(elementToProcess)}"
+      fs.writeFileSync elementToProcess.target, fs.readFileSync(elementToProcess.fullPath)
       
 createClassPath = ()->
   #TODO
     
-clean()
+prepare conf.dirs["target"]
 getDependencies()
 
 
