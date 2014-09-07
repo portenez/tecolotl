@@ -56,6 +56,9 @@ getDependencies = ()->
     .forEach (line)-> 
       fs.writeFileSync "#{conf.dirs['target']}/#{line.fileName}", fs.readFileSync(line.fullPath)
       
+createClassPath = ()->
+  #TODO
+    
 clean()
 getDependencies()
 
