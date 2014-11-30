@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+apt-get update && apt-get install -y\
+    default-jdk \ #this installs open JDK
+    maven
+
+#to install java 8 from oracle
+echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+add-apt-repository -y ppa:webupd8team/java && apt-getupdate
+#TODO to install java 7 from oracle..???
+
