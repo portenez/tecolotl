@@ -3,6 +3,7 @@ Various scripts to make gedit bettah
 
 #Scripts
 These all need to be run as root, or sudo. They will overwrite existing xml files
+- [customizeGedit](customizeGedit): **runs all customizations below..**
 - [addDockerSupport](addDockerSupport): Configures gedit to be able to support Dockerfile syntax.
 - [addRubiciousMod](addRubiciousMod): Adds RubiciousMod skin to gedit
 - [addRubiciousMod](addRubiciousMod): Adds Lethe skin to gedit

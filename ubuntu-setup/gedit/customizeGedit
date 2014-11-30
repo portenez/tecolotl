@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#RUN AS SUDO!!!
+./addDockerSupport
+./addRubiciousMod
+./addStyleLethe
+./addStyles
