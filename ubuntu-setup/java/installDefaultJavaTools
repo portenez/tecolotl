@@ -7,6 +7,6 @@
 #for more precise versioning
 #more work is needed.. see installJava8FromOracleUsingPPA
 apt-get update && apt-get install -y \
-    default-jdk \ #this installs open JDK
+    default-jdk \
     maven \
     gradle

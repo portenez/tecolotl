@@ -16,5 +16,5 @@ sudo docker build -t ${my-tag} .
 ##Running the docker container with mounted folder for tests
 
 ```Shell
-sudo docker run -i -v `pwd`:${target-dir-to-mount}` --rm -t ${my-tag} /bin/bash
+sudo docker run -i -v `pwd`:/prepare-mount --rm -t testu  /bin/bash
 ```
