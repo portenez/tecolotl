@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+GIT_REPO=https://github.com/wavded/gedit-coffeescript.git
+TEMP_DIR=`uuidgen`
+mkdir $TEMP_DIR
+git clone $GIT_REPO $TEMP_DIR
+cp -f $TEMP_DIR/rubycius-mod.xml /usr/share/gtksourceview-3.0/styles/
+rm -rf $TEMP_DIR

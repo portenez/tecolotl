@@ -6,5 +6,5 @@ GIT_REPO=https://github.com/ilogue/docker.lang.git
 TEMP_DIR=`uuidgen`
 mkdir $TEMP_DIR
 git clone $GIT_REPO $TEMP_DIR
-cp $TEMP_DIR/docker.lang /usr/share/gtksourceview-3.0/language-specs/
+cp -f $TEMP_DIR/docker.lang /usr/share/gtksourceview-3.0/language-specs/
 rm -rf $TEMP_DIR
