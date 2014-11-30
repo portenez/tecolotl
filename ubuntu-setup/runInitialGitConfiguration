@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#you DO NOT need to run this as root
+cat << "EOF"
+╔═╗┌─┐┌┐┌┌─┐┬┌─┐┬ ┬┬─┐┬┌┐┌┌─┐  ╔═╗┬┌┬┐
+║  │ ││││├┤ ││ ┬│ │├┬┘│││││ ┬  ║ ╦│ │ 
+╚═╝└─┘┘└┘└  ┴└─┘└─┘┴└─┴┘└┘└─┘  ╚═╝┴ ┴
+EOF
+
+GIT_USER_NAME=${GIT_USER_NAME:?"GIT_USER_NAME hasn't been set, please set it"}
+GIT_USER_EMAIL=${GIT_USER_EMAIL:?"GIT_USER_EMAIL hasn't been set, please set it"}
+git config --global user.name "$GIT_USER_NAME"
+git config --global user.email $GIT_USER_EMAIL
+git config --global core.editor gedit
+git config --list
+cat << "EOF"
+ __                    _    _             
+/__ o _|_    _  _ __ _|_ o (_|    __ _  _|
+\_| |  |_   (_ (_)| | |  | __||_| | (/_(_|
+EOF
